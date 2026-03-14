@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Chemistry — Interactive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
+        <aside id="sidebar">
+            <div id="sidebar-header">
+                <h1>Quantum Chemistry</h1>
+                <p class="author">Szabo &amp; Ostlund / Levine / Jensen</p>
+                <div id="progress-container">
+                    <div id="progress-bar"><div id="progress-fill"></div></div>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+            <div id="search-container">
+                <input type="text" id="search-input" placeholder="Search topics...">
+            </div>
+            <nav id="chapter-nav"></nav>
+            <div id="sidebar-footer"><p class="copyright-notice" style="font-size:0.7rem;color:#888;margin-top:12px;text-align:center;">&copy; 2026 Hengzhe Zhao &middot; AGPL-3.0 &amp; Commercial</p>
+                <button id="reset-progress">Reset Progress</button>
+            </div>
+        </aside>
+        <main id="main-content">
+            <div id="welcome-screen">
+                <div class="welcome-hero">
+                    <h1>Quantum Chemistry</h1>
+                    <h2>量子化学 · Interactive</h2>
+                    <p class="welcome-description">
+                        From the Schr&ouml;dinger equation to density functional theory, explore
+                        electronic structure methods through interactive visualizations. Every orbital,
+                        every integral, every self-consistent field iteration comes alive on screen.
+                    </p>
+                </div>
+                <div class="roadmap">
+                    <h3>What You'll Explore</h3>
+                    <div class="roadmap-parts">
+                        <div class="roadmap-part">
+                            <h4>Part A: Foundations</h4>
+                            <ul>
+                                <li>Ch 0: Mathematical Foundations</li>
+                                <li>Ch 1: The Hydrogen Atom</li>
+                                <li>Ch 2: Many-Electron Atoms</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part B: Molecular Orbital Theory</h4>
+                            <ul>
+                                <li>Ch 3: Molecular Orbital Theory</li>
+                                <li>Ch 4: The Hartree-Fock Approximation</li>
+                                <li>Ch 5: Basis Sets</li>
+                                <li>Ch 6: The SCF Procedure</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part C: Electron Correlation</h4>
+                            <ul>
+                                <li>Ch 7: Electron Correlation Overview</li>
+                                <li>Ch 8: Configuration Interaction</li>
+                                <li>Ch 9: Perturbation Theory &amp; MP2</li>
+                                <li>Ch 10: Coupled Cluster Theory</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part D: Density Functional Theory</h4>
+                            <ul>
+                                <li>Ch 11: DFT Foundations</li>
+                                <li>Ch 12: Exchange-Correlation Functionals</li>
+                                <li>Ch 13: Practical DFT</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part E: Molecular Properties</h4>
+                            <ul>
+                                <li>Ch 14: Molecular Properties</li>
+                                <li>Ch 15: Potential Energy Surfaces</li>
+                                <li>Ch 16: Vibrational Spectroscopy</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part F: Advanced Topics</h4>
+                            <ul>
+                                <li>Ch 17: Electronic Spectroscopy</li>
+                                <li>Ch 18: Relativistic Effects</li>
+                                <li>Ch 19: Modern Methods &amp; Frontiers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="welcome-start">Select a chapter from the sidebar to begin your journey into quantum chemistry!</p>
+            </div>
+            <div id="chapter-content" style="display:none;">
+                <div id="chapter-header">
+                    <div id="chapter-number-badge"></div>
+                    <h1 id="chapter-title"></h1>
+                    <p id="chapter-subtitle"></p>
+                </div>
+                <div id="section-tabs"></div>
+                <article id="section-content"></article>
+                <div id="exercises-panel" style="display:none;">
+                    <h3>Exercises</h3>
+                    <div id="exercises-list"></div>
+                </div>
+                <div id="chapter-nav-buttons">
+                    <button id="prev-btn" disabled>&larr; Previous</button>
+                    <span id="section-indicator"></span>
+                    <button id="next-btn">Next &rarr;</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="viz-engine.js"></script>
+
+    <!-- Chapter manifest for lazy loading -->
+    <script>
+    window.CHAPTER_MANIFEST = [
+        {number:0,  id:'ch00', title:'Mathematical Foundations',                      file:'ch00-math-foundations'},
+        {number:1,  id:'ch01', title:'The Hydrogen Atom',                             file:'ch01-hydrogen-atom'},
+        {number:2,  id:'ch02', title:'Many-Electron Atoms',                           file:'ch02-many-electron-atoms'},
+        {number:3,  id:'ch03', title:'Molecular Orbital Theory',                      file:'ch03-molecular-orbitals'},
+        {number:4,  id:'ch04', title:'The Hartree-Fock Approximation',                file:'ch04-hartree-fock'},
+        {number:5,  id:'ch05', title:'Basis Sets',                                    file:'ch05-basis-sets'},
+        {number:6,  id:'ch06', title:'The SCF Procedure',                             file:'ch06-scf-procedure'},
+        {number:7,  id:'ch07', title:'Electron Correlation',                          file:'ch07-electron-correlation'},
+        {number:8,  id:'ch08', title:'Configuration Interaction',                     file:'ch08-configuration-interaction'},
+        {number:9,  id:'ch09', title:'Perturbation Theory & MP2',                     file:'ch09-perturbation-mp2'},
+        {number:10, id:'ch10', title:'Coupled Cluster Theory',                        file:'ch10-coupled-cluster'},
+        {number:11, id:'ch11', title:'DFT: Foundations',                              file:'ch11-dft-foundations'},
+        {number:12, id:'ch12', title:'Exchange-Correlation Functionals',              file:'ch12-xc-functionals'},
+        {number:13, id:'ch13', title:'Practical DFT',                                 file:'ch13-practical-dft'},
+        {number:14, id:'ch14', title:'Molecular Properties',                          file:'ch14-molecular-properties'},
+        {number:15, id:'ch15', title:'Potential Energy Surfaces',                     file:'ch15-potential-energy-surfaces'},
+        {number:16, id:'ch16', title:'Vibrational Spectroscopy',                      file:'ch16-vibrational-spectroscopy'},
+        {number:17, id:'ch17', title:'Electronic Spectroscopy',                       file:'ch17-electronic-spectroscopy'},
+        {number:18, id:'ch18', title:'Relativistic Effects',                          file:'ch18-relativistic-effects'},
+        {number:19, id:'ch19', title:'Modern Methods & Frontiers',                    file:'ch19-modern-methods'}
+    ];
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
